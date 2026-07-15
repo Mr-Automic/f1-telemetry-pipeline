@@ -36,6 +36,20 @@ class DatabaseManager:
         self.con.commit()
         print(f"-- Database [{driver_number}] deleted Successfully --")
 
+    def get_all_drivers(self):
+        self.cur.execute("SELECT driver_number, full_name, team_name, country_code FROM drivers")
+        rows = self.cur.fetchall()
+
+        driver_list = []
+        for row in rows:
+            driver_list.append({
+                "driver_num": row[0],
+                "full_name": row[1],
+                "team_name": row[2],
+                "country_code": row[3]
+            })
+        return driver_list
+    
     def close_connection(self):
         self.cur.close()
         self.con.close()
