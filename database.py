@@ -27,14 +27,16 @@ class DatabaseManager:
             print(f"Driver [{driver_obj._driver_number}] Already exists. Skipped (Ignored).")
         
     def update_driver_team(self, driver_number, new_team_name):
-        self.cur.execute("UPDATE drivers SET team_name = ? WHERE driver_num = ?",(new_team_name, driver_number))
+        self.cur.execute("UPDATE drivers SET team_name = ? WHERE driver_number = ?",(new_team_name, driver_number))
         self.con.commit()
         print(f"-- Database [{driver_number}] updated Successfully --")
+        return self.cur.rowcount > 0
 
     def delete_driver(self, driver_number):
-        self.cur.execute("DELETE FROM drivers WHERE driver_num = ?",(driver_number,))
+        self.cur.execute("DELETE FROM drivers WHERE driver_number = ?",(driver_number,))
         self.con.commit()
         print(f"-- Database [{driver_number}] deleted Successfully --")
+        return self.cur.rowcount > 0
 
     def get_all_drivers(self):
         self.cur.execute("SELECT driver_number, full_name, team_name, country_code FROM drivers")
@@ -50,6 +52,19 @@ class DatabaseManager:
             })
         return driver_list
     
+    def get_driver_by_num(self, driver_num):
+        self.cur.execute("SELECT driver_number, full_name, team_name, country_code FROM drivers WHERE driver_number = ?",(driver_num,))
+        row = self.cur.fetchone()
+
+        if row is not None:
+            return{
+                "driver_num": row[0],
+                "full_name": row[1],
+                "team_name": row[2],
+                "country_code": row[3]
+            }
+        return None
+
     def close_connection(self):
         self.cur.close()
         self.con.close()
