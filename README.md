@@ -44,6 +44,7 @@ Auto-Documentation: Built-in OpenAPI specification available at /docs.
 
 ## Repository Structure
 
+```text
 ├── app.py              # FastAPI application server & REST endpoints
 ├── pipeline.py         # Standalone ingestion runner (Fetch -> Model -> Persist)
 ├── api.py              # OpenF1 live API integration client
@@ -53,30 +54,42 @@ Auto-Documentation: Built-in OpenAPI specification available at /docs.
 ├── Dockerfile          # Containerized runtime definition
 ├── requirements.txt    # Production dependency pins
 └── .gitignore          # Environment & secret shielding
+```
+
+---
 
 ## Setup & Execution
 
-1. Environment Configuration
-  Create a .env file in the root directory:
-  DB_HOST=localhost
-  DB_PORT=5432
-  DB_NAME=f1_db
-  DB_USER=your_user
-  DB_PASSWORD=your_password
+### 1. Environment Configuration
+Create a `.env` file in the root directory:
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=f1_db
+DB_USER=your_user
+DB_PASSWORD=your_password
+```
 
-2. Install Dependencies
-  python3 -m venv .venv
-  source .venv/bin/activate
-  pip install -r requirements.txt
+### 2. Install Dependencies
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-3. Run Verification Tests
-  python3 test_models.py
+### 3. Run Verification Tests
+```bash
+python3 test_models.py
+```
 
-4. Execute the Ingestion Pipeline
-  Fetches live driver data from session streams and updates PostgreSQL:
-  python3 pipeline.py
+### 4. Execute the Ingestion Pipeline
+```bash
+python3 pipeline.py
+```
 
-5. Launch the REST API Server
-   uvicorn app:app --reload --port 8000
+### 5. Launch the REST API Server
+```bash
+uvicorn app:app --reload --port 8000
+```
+Interactive docs will be available at `http://localhost:8000/docs`.
 
-Interactive docs will be available at http://localhost:8000/docs.
